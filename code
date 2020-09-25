@@ -1,0 +1,102 @@
+CREATE TABLE pithecantropus (
+	pithecantropus_id serial primary key NOT NULL,
+	name character(20) NOT NULL,
+	step_in_evolution text NOT NULL);
+
+create table evolution_step (
+	step_id serial primary key, 
+	name varchar(20), 
+	e_pithecantropus_id integer NOT NULL );
+
+ALTER TABLE evolution_step
+  ADD FOREIGN KEY (e_pithecantropus_id) REFERENCES pithecantropus(pithecantropus_id);
+	
+CREATE TABLE athom (
+	athom_id serial primary key NOT NULL,
+	chemical_name character(20) NOT NULL,
+	nucleus integer NOT NULL CHECK (nucleus > 0 AND nucleus <110));
+
+	
+CREATE TABLE calendar (
+	calendar_id serial primary key NOT NULL,
+	day date NOT NULL,
+	memory text);
+	
+	
+CREATE TABLE structure (
+	structure_id serial primary key NOT NULL,
+	structure_name character(20) NOT NULL);
+	
+
+CREATE TABLE gene (
+	gene_id serial primary key NOT NULL,
+	gene_name character(20) NOT NULL,
+	gene_role text);
+	
+
+CREATE TABLE pithecantropus_athom (
+	pa_pithecantropus_id integer NOT NULL,
+	pa_athom_id integer NOT NULL);
+	
+ALTER TABLE pithecantropus_athom
+	ADD FOREIGN KEY (pa_pithecantropus_id) REFERENCES pithecantropus(pithecantropus_id),
+	ADD FOREIGN KEY (pa_athom_id) REFERENCES athom(athom_id);
+
+CREATE TABLE pithecantropus_calendar (
+	pc_pithecantropus_id integer NOT NULL,
+	pc_calendar_id integer NOT NULL);
+
+ALTER TABLE pithecantropus_calendar
+	ADD FOREIGN KEY (pc_pithecantropus_id) REFERENCES pithecantropus(pithecantropus_id),
+	ADD FOREIGN KEY (pc_calendar_id) REFERENCES calendar(calendar_id);
+
+CREATE TABLE athom_structure (
+	as_athom_id integer NOT NULL,
+	as_structure_id integer NOT NULL);
+	
+ALTER TABLE athom_structure
+	ADD FOREIGN KEY (as_structure_id) REFERENCES structure(structure_id),
+	ADD FOREIGN KEY (as_athom_id) REFERENCES athom(athom_id);
+	
+
+CREATE TABLE structure_gene (
+	sg_gene_id integer NOT NULL,
+	sg_structure_id integer NOT NULL);
+
+ALTER TABLE structure_gene
+	ADD FOREIGN KEY (sg_structure_id) REFERENCES structure(structure_id),
+	ADD FOREIGN KEY (sg_gene_id) REFERENCES gene(gene_id);
+	
+
+INSERT INTO pithecantropus VALUES( 1, 'First', 'aaaaa');
+INSERT INTO pithecantropus VALUES(2, 'Second', 'ffff');
+INSERT INTO pithecantropus VALUES(3, 'Third', 'qqq');
+INSERT INTO pithecantropus VALUES(4, 'Fourth', 'ww');
+INSERT INTO pithecantropus VALUES(5, 'Fifth', 'e');
+INSERT INTO pithecantropus VALUES(6, 'Sixth', 'rfff');
+
+INSERT INTO evolution_step VALUES(1, 'N', 1);
+
+INSERT INTO athom VALUES(1, 'N', 1);
+INSERT INTO athom VALUES(2, 'O', 7);
+
+INSERT INTO calendar VALUES(1, '2020-09-24', 'help me');
+INSERT INTO calendar VALUES(2, '2020-09-23', NULL);
+
+INSERT INTO gene VALUES(1, 'X', 'female gene');
+INSERT INTO gene VALUES(2, 'Y', 'male gene');
+INSERT INTO gene VALUES(3, 'Z', NULL);
+
+INSERT INTO structure VALUES(1, 'First_struct');
+
+INSERT INTO pithecantropus_athom VALUES(1, 1);
+INSERT INTO pithecantropus_athom VALUES(1, 2);
+INSERT INTO pithecantropus_athom VALUES(2, 2);
+
+INSERT INTO pithecantropus_calendar VALUES(1, 2);
+INSERT INTO pithecantropus_calendar VALUES(2, 1);
+
+INSERT INTO athom_structure VALUES(1, 1);
+INSERT INTO athom_structure VALUES(2, 1);
+
+INSERT INTO structure_gene VALUES(3, 1);
